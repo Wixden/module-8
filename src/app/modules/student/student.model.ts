@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import {
   Address,
   Guardian,
@@ -56,4 +56,4 @@ const StudentSchema = new Schema<Student>({
 });
 
 // create model:
-const Student = model<Student>('Student', StudentSchema);
+export const StudentModel = model<Student>('Student', StudentSchema);
