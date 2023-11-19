@@ -61,11 +61,13 @@ const StudentSchema = new Schema<Student>({
   id: {
     type: String,
     required: true,
+    trim: true,
     unique: true,
   },
   name: {
     type: userNameSchema,
     required: [true, 'Name field is required'],
+    trim: true,
   },
   gender: {
     type: String,
@@ -76,41 +78,54 @@ const StudentSchema = new Schema<Student>({
         '{VALUE} is not a valid gender',
     },
     required: true,
+    trim: true,
   },
-  birthDate: { type: String, required: [true, 'Birth date is required'] },
+  birthDate: {
+    type: String,
+    required: [true, 'Birth date is required'],
+    trim: true,
+  },
   email: {
     type: String,
     required: [true, 'Student email is required'],
     unique: true,
+    trim: true,
   },
   phoneNumber: {
     type: String,
     required: [true, 'Student phone number is required'],
     unique: true,
+    trim: true,
   },
   emergencyPhoneNumber: {
     type: String,
     required: [true, 'Student emergency phone number is required'],
+    trim: true,
   },
   bloodGroup: {
     type: String,
     enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    trim: true,
   },
   presentAddress: {
     type: addressSchema,
     required: [true, 'Student present address is required'],
+    trim: true,
   },
   permanentAddress: {
     type: addressSchema,
     required: [true, 'Student permanent address is required'],
+    trim: true,
   },
   guardian: {
     type: guardianSchema,
     required: [true, 'Student guardian is required'],
+    trim: true,
   },
   localGuardian: {
     type: localGuardianSchema,
     required: [true, 'Student local guardian is required'],
+    trim: true,
   },
   profileImg: { type: String },
   isActive: {
