@@ -1,3 +1,9 @@
+export interface UserName {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+}
+
 export interface Address {
   street: string;
   city: string;
@@ -23,11 +29,7 @@ export interface LocalGuardian {
 
 export interface Student {
   id: string;
-  name: {
-    firstName: string;
-    middleName: string;
-    lastName: string;
-  };
+  name: UserName;
   gender: 'Male' | 'Female';
   birthDate: string;
   email: string;
@@ -39,5 +41,5 @@ export interface Student {
   guardian: Guardian;
   localGuardian: LocalGuardian;
   profileImg?: string;
-  isActive: 'Active' | 'InActive';
+  isActive: 'Active' | 'Blocked';
 }
