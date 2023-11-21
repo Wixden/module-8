@@ -16,7 +16,7 @@ const createStudent = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err.message,
+      error: (err as Error).message,
     });
   }
 };
@@ -35,7 +35,7 @@ const getStudents = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err.message,
+      error: (err as Error).message,
     });
   }
 };
@@ -55,7 +55,7 @@ const getStudent = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went wrong',
-      error: err.message,
+      error: (err as Error).message,
     });
   }
 };
