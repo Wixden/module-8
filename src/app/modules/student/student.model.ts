@@ -21,7 +21,14 @@ const userNameSchema = new Schema<UserName>({
     },
   },
   middleName: { type: String },
-  lastName: { type: String, required: [true, 'Last Name is required'] },
+  lastName: {
+    type: String,
+    required: [true, 'Last Name is required'],
+    validate: {
+      validator: (value: string) => validator.isAlpha(value),
+      message: 'Last Name must be alphabetic, {VALUE} is not a valid name',
+    },
+  },
 });
 
 const addressSchema = new Schema<Address>({
