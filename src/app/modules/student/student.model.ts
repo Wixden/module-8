@@ -160,14 +160,18 @@ const StudentSchema = new Schema<IStudent, StudentModel>({
     enum: ['Active', 'Blocked'],
     default: 'Active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 
   //
 });
 
-// mongoose middleware:
+// mongoose document middleware:
 // Pre save middleware: will work on create() and save()
 StudentSchema.pre('save', async function (next) {
-  console.log(this, 'Pre Hook: will execute before saving data');
+  // console.log(this, 'Pre Hook: will execute before saving data');
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
   // password hashing and saving password
@@ -179,8 +183,15 @@ StudentSchema.pre('save', async function (next) {
 });
 
 // Post save middleware: will work on create() and save()
-StudentSchema.post('save', function () {
-  console.log(this, 'Post Hook: will execute after saving data');
+StudentSchema.post('save', function (doc, next) {
+  // console.log(this, 'Post Hook: will execute after saving data');
+  doc.password = '';
+  next();
+});
+
+// Mongoose query middleware:
+StudentSchema.pre('find', async function (next) {
+  console.log(this);
 });
 
 // Custom instance methods:
