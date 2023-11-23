@@ -10,6 +10,7 @@ import {
   StudentModel,
 } from './student.interface';
 import bcrypt from 'bcrypt';
+import config from '../../config';
 
 const userNameSchema = new Schema<IUserName>({
   firstName: {
@@ -165,8 +166,16 @@ const StudentSchema = new Schema<IStudent, StudentModel>({
 
 // mongoose middleware:
 // Pre save middleware: will work on create() and save()
-StudentSchema.pre('save', function () {
+StudentSchema.pre('save', async function (next) {
   console.log(this, 'Pre Hook: will execute before saving data');
+  // eslint-disable-next-line @typescript-eslint/no-this-alias
+  const user = this;
+  // password hashing and saving password
+  user.password = await bcrypt.hash(
+    user.password,
+    Number(config.bcrypt_salt_round),
+  );
+  next();
 });
 
 // Post save middleware: will work on create() and save()
