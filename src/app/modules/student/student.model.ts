@@ -89,6 +89,7 @@ const StudentSchema = new Schema<IStudent, StudentModel>({
     required: [true, 'Name field is required'],
     trim: true,
   },
+  password: { type: String, required: [true, 'Password is required'] },
   gender: {
     type: String,
     enum: {
