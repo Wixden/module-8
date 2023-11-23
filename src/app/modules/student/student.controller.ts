@@ -5,7 +5,77 @@ import Joi from 'joi';
 
 const createStudent = async (req: Request, res: Response) => {
   try {
+    // creating a schema validation using JOI.
+
+    // Define JOI schema for UserName
+    const userNameSchema = Joi.object({
+      firstName: Joi.string()
+        .required()
+        .pattern(/^[A-Z][a-z]*$/),
+      middleName: Joi.string(),
+      lastName: Joi.string()
+        .required()
+        .pattern(/^[A-Z][a-z]*$/),
+    });
+
+    // Define JOI schema for Address
+    const addressSchema = Joi.object({
+      street: Joi.string().required(),
+      city: Joi.string().required(),
+      postalCode: Joi.string().required(),
+    });
+
+    // Define JOI schema for Guardian
+    const guardianSchema = Joi.object({
+      fatherName: Joi.string().required(),
+      fatherOccupation: Joi.string().required(),
+      fatherPhone: Joi.string().required(),
+      motherName: Joi.string().required(),
+      motherOccupation: Joi.string().required(),
+      motherPhone: Joi.string().required(),
+    });
+
+    // Define JOI schema for LocalGuardian
+    const localGuardianSchema = Joi.object({
+      name: Joi.string().required(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().required(),
+      occupation: Joi.string().required(),
+      address: addressSchema.required(),
+    });
+
+    // Define JOI schema for the main Student model
+    const studentSchema = Joi.object({
+      id: Joi.string().required(),
+      name: userNameSchema.required(),
+      gender: Joi.string().valid('Male', 'Female').required(),
+      birthDate: Joi.string().required(),
+      email: Joi.string().email().required(),
+      phoneNumber: Joi.string().required(),
+      emergencyPhoneNumber: Joi.string().required(),
+      bloodGroup: Joi.string().valid(
+        'A+',
+        'A-',
+        'B+',
+        'B-',
+        'AB+',
+        'AB-',
+        'O+',
+        'O-',
+      ),
+      presentAddress: addressSchema.required(),
+      permanentAddress: addressSchema.required(),
+      guardian: guardianSchema.required(),
+      localGuardian: localGuardianSchema.required(),
+      profileImg: Joi.string(),
+      isActive: Joi.string().valid('Active', 'Blocked').default('Active'),
+    });
+
+    // creating a schema validation using JOI END.
+
     const { student: studentData } = req.body;
+    const { error, value } = studentSchema.validate(studentData);
+    console.log({ error, value });
 
     const result = await StudentServices.createStudentIntoDB(studentData);
 
