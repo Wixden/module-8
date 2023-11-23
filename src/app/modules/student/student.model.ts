@@ -190,8 +190,23 @@ StudentSchema.post('save', function (doc, next) {
 });
 
 // Mongoose query middleware:
+// filter all data
 StudentSchema.pre('find', async function (next) {
-  console.log(this);
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+StudentSchema.pre('findOne', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+StudentSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } }); //it works
+
+  this.match({ isDeleted: { $ne: true } }); //it works
+
+  next();
 });
 
 // Custom instance methods:
