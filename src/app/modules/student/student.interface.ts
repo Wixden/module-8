@@ -46,12 +46,18 @@ export interface IStudent {
   isActive: 'Active' | 'Blocked';
 }
 
-export interface StudentMethods {
+// Custom instance methods:
+// export interface StudentMethods {
+//   userExists(id: string): Promise<IStudent | null>;
+// }
+
+// export type StudentModel = Model<
+//   IStudent,
+//   Record<string, never>,
+//   StudentMethods
+// >;
+
+// Custom static methods:
+export interface StudentModel extends Model<IStudent> {
   userExists(id: string): Promise<IStudent | null>;
 }
-
-export type StudentModel = Model<
-  IStudent,
-  Record<string, never>,
-  StudentMethods
->;
