@@ -1,71 +1,64 @@
-import Joi from 'joi';
+import { z } from 'zod';
 
-// creating a schema validation using JOI.
-
-// Define JOI schema for UserName
-const userNameValidationSchema = Joi.object({
-  firstName: Joi.string()
-    .required()
-    .pattern(/^[A-Z][a-z]*$/),
-  middleName: Joi.string(),
-  lastName: Joi.string()
-    .required()
-    .pattern(/^[A-Z][a-z]*$/),
+// Define Zod schema for UserName
+const userNameZodSchema = z.object({
+  firstName: z
+    .string()
+    .min(1)
+    .refine((value) => /^[A-Z][a-z]*$/.test(value), {
+      message: 'First Name should be in capitalized format and alphabetic',
+    }),
+  middleName: z.string(),
+  lastName: z
+    .string()
+    .min(1)
+    .refine((value) => /^[A-Z][a-z]*$/.test(value), {
+      message: 'Last Name must be alphabetic',
+    }),
 });
 
-// Define JOI schema for Address
-const addressValidationSchema = Joi.object({
-  street: Joi.string().required(),
-  city: Joi.string().required(),
-  postalCode: Joi.string().required(),
+// Define Zod schema for Address
+const addressZodSchema = z.object({
+  street: z.string().min(1),
+  city: z.string().min(1),
+  postalCode: z.string().min(1),
 });
 
-// Define JOI schema for Guardian
-const guardianValidationSchema = Joi.object({
-  fatherName: Joi.string().required(),
-  fatherOccupation: Joi.string().required(),
-  fatherPhone: Joi.string().required(),
-  motherName: Joi.string().required(),
-  motherOccupation: Joi.string().required(),
-  motherPhone: Joi.string().required(),
+// Define Zod schema for Guardian
+const guardianZodSchema = z.object({
+  fatherName: z.string().min(1),
+  fatherOccupation: z.string().min(1),
+  fatherPhone: z.string().min(1),
+  motherName: z.string().min(1),
+  motherOccupation: z.string().min(1),
+  motherPhone: z.string().min(1),
 });
 
-// Define JOI schema for LocalGuardian
-const localGuardianValidationSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().email().required(),
-  phone: Joi.string().required(),
-  occupation: Joi.string().required(),
-  address: addressValidationSchema.required(),
+// Define Zod schema for LocalGuardian
+const localGuardianZodSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  phone: z.string().min(1),
+  occupation: z.string().min(1),
+  address: addressZodSchema,
 });
 
-// Define JOI schema for the main Student model
-const studentValidationSchema = Joi.object({
-  id: Joi.string().required(),
-  name: userNameValidationSchema.required(),
-  gender: Joi.string().valid('Male', 'Female').required(),
-  birthDate: Joi.string().required(),
-  email: Joi.string().email().required(),
-  phoneNumber: Joi.string().required(),
-  emergencyPhoneNumber: Joi.string().required(),
-  bloodGroup: Joi.string().valid(
-    'A+',
-    'A-',
-    'B+',
-    'B-',
-    'AB+',
-    'AB-',
-    'O+',
-    'O-',
-  ),
-  presentAddress: addressValidationSchema.required(),
-  permanentAddress: addressValidationSchema.required(),
-  guardian: guardianValidationSchema.required(),
-  localGuardian: localGuardianValidationSchema.required(),
-  profileImg: Joi.string(),
-  isActive: Joi.string().valid('Active', 'Blocked').default('Active'),
+// Define Zod schema for the main Student model
+const studentZodSchema = z.object({
+  id: z.string(),
+  name: userNameZodSchema,
+  gender: z.enum(['Male', 'Female']),
+  birthDate: z.string(),
+  email: z.string().email(),
+  phoneNumber: z.string(),
+  emergencyPhoneNumber: z.string(),
+  bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+  presentAddress: addressZodSchema,
+  permanentAddress: addressZodSchema,
+  guardian: guardianZodSchema,
+  localGuardian: localGuardianZodSchema,
+  profileImg: z.string(),
+  isActive: z.enum(['Active', 'Blocked']).default('Active'),
 });
 
-// creating a schema validation using JOI END.
-
-export default studentValidationSchema;
+export default studentZodSchema;
