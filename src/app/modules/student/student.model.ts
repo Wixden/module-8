@@ -9,6 +9,7 @@ import {
   // StudentMethods,
   StudentModel,
 } from './student.interface';
+import bcrypt from 'bcrypt';
 
 const userNameSchema = new Schema<IUserName>({
   firstName: {
@@ -160,6 +161,17 @@ const StudentSchema = new Schema<IStudent, StudentModel>({
   },
 
   //
+});
+
+// mongoose middleware:
+// Pre save middleware: will work on create() and save()
+StudentSchema.pre('save', function () {
+  console.log(this, 'Pre Hook: will execute before saving data');
+});
+
+// Post save middleware: will work on create() and save()
+StudentSchema.post('save', function () {
+  console.log(this, 'Post Hook: will execute after saving data');
 });
 
 // Custom instance methods:
