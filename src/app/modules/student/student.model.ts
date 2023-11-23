@@ -1,14 +1,14 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
 import {
-  Address,
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
+  IAddress,
+  IGuardian,
+  ILocalGuardian,
+  IStudent,
+  IUserName,
 } from './student.interface';
 
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<IUserName>({
   firstName: {
     type: String,
     required: [true, 'First Name is required'],
@@ -31,13 +31,13 @@ const userNameSchema = new Schema<UserName>({
   },
 });
 
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<IAddress>({
   street: { type: String, required: [true, 'Street address is required'] },
   city: { type: String, required: [true, 'City name is required'] },
   postalCode: { type: String, required: [true, 'Post code is required'] },
 });
 
-const guardianSchema = new Schema<Guardian>({
+const guardianSchema = new Schema<IGuardian>({
   fatherName: { type: String, required: [true, 'Father name is required'] },
   fatherOccupation: {
     type: String,
@@ -58,7 +58,7 @@ const guardianSchema = new Schema<Guardian>({
   },
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
+const localGuardianSchema = new Schema<ILocalGuardian>({
   name: { type: String, required: [true, 'Local Guardian name is required'] },
   email: { type: String, required: [true, 'Local Guardian email is required'] },
   phone: {
@@ -75,7 +75,7 @@ const localGuardianSchema = new Schema<LocalGuardian>({
   },
 });
 
-const StudentSchema = new Schema<Student>({
+const StudentSchema = new Schema<IStudent>({
   id: {
     type: String,
     required: true,
@@ -160,4 +160,4 @@ const StudentSchema = new Schema<Student>({
 });
 
 // create model:
-export const StudentModel = model<Student>('Student', StudentSchema);
+export const Student = model<IStudent>('Student', StudentSchema);

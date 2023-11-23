@@ -1,16 +1,16 @@
-export interface UserName {
+export interface IUserName {
   firstName: string;
   middleName?: string;
   lastName: string;
 }
 
-export interface Address {
+export interface IAddress {
   street: string;
   city: string;
   postalCode: string;
 }
 
-export interface Guardian {
+export interface IGuardian {
   fatherName: string;
   fatherOccupation: string;
   fatherPhone: string;
@@ -19,27 +19,27 @@ export interface Guardian {
   motherPhone: string;
 }
 
-export interface LocalGuardian {
+export interface ILocalGuardian {
   name: string;
   email: string;
   phone: string;
   occupation: string;
-  address: Address;
+  address: IAddress;
 }
 
-export interface Student {
+export interface IStudent {
   id: string;
-  name: UserName;
+  name: IUserName;
   gender: 'Male' | 'Female';
   birthDate: string;
   email: string;
   phoneNumber: string;
   emergencyPhoneNumber: string;
   bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-';
-  presentAddress: Address;
-  permanentAddress: Address;
-  guardian: Guardian;
-  localGuardian: LocalGuardian;
+  presentAddress: IAddress;
+  permanentAddress: IAddress;
+  guardian: IGuardian;
+  localGuardian: ILocalGuardian;
   profileImg?: string;
   isActive: 'Active' | 'Blocked';
 }
