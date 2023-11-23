@@ -1,3 +1,5 @@
+import { Model } from 'mongoose';
+
 export interface IUserName {
   firstName: string;
   middleName?: string;
@@ -43,3 +45,13 @@ export interface IStudent {
   profileImg?: string;
   isActive: 'Active' | 'Blocked';
 }
+
+export interface StudentMethods {
+  userExists(id: string): Promise<IStudent | null>;
+}
+
+export type StudentModel = Model<
+  IStudent,
+  Record<string, never>,
+  StudentMethods
+>;

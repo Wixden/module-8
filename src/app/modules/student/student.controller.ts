@@ -30,7 +30,7 @@ const createStudent = async (req: Request, res: Response) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: 'Something went wrong',
+      message: (err as Error).message || 'Something went wrong',
       error: err,
       // error: (err as Error).message,
       // error: err.issues[0].message,
