@@ -79,94 +79,101 @@ const localGuardianSchema = new Schema<ILocalGuardian>({
   },
 });
 
-const StudentSchema = new Schema<IStudent, StudentModel>({
-  id: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
-  },
-  name: {
-    type: userNameSchema,
-    required: [true, 'Name field is required'],
-    trim: true,
-  },
-  password: { type: String, required: [true, 'Password is required'] },
-  gender: {
-    type: String,
-    enum: {
-      values: ['Male', 'Female'],
-      message:
-        // "The gender field can only be one of the following: 'Male' or 'Female'",
-        '{VALUE} is not a valid gender',
+const StudentSchema = new Schema<IStudent, StudentModel>(
+  {
+    id: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
     },
-    required: true,
-    trim: true,
-  },
-  birthDate: {
-    type: String,
-    required: [true, 'Birth date is required'],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, 'Student email is required'],
-    unique: true,
-    trim: true,
-    validate: {
-      validator: (value: string) => validator.isEmail(value),
-      message: '{VALUE} is not a valid email address',
+    name: {
+      type: userNameSchema,
+      required: [true, 'Name field is required'],
+      trim: true,
     },
-  },
-  phoneNumber: {
-    type: String,
-    required: [true, 'Student phone number is required'],
-    unique: true,
-    trim: true,
-  },
-  emergencyPhoneNumber: {
-    type: String,
-    required: [true, 'Student emergency phone number is required'],
-    trim: true,
-  },
-  bloodGroup: {
-    type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-    trim: true,
-  },
-  presentAddress: {
-    type: addressSchema,
-    required: [true, 'Student present address is required'],
-    trim: true,
-  },
-  permanentAddress: {
-    type: addressSchema,
-    required: [true, 'Student permanent address is required'],
-    trim: true,
-  },
-  guardian: {
-    type: guardianSchema,
-    required: [true, 'Student guardian is required'],
-    trim: true,
-  },
-  localGuardian: {
-    type: localGuardianSchema,
-    required: [true, 'Student local guardian is required'],
-    trim: true,
-  },
-  profileImg: { type: String },
-  isActive: {
-    type: String,
-    enum: ['Active', 'Blocked'],
-    default: 'Active',
-  },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
+    password: { type: String, required: [true, 'Password is required'] },
+    gender: {
+      type: String,
+      enum: {
+        values: ['Male', 'Female'],
+        message:
+          // "The gender field can only be one of the following: 'Male' or 'Female'",
+          '{VALUE} is not a valid gender',
+      },
+      required: true,
+      trim: true,
+    },
+    birthDate: {
+      type: String,
+      required: [true, 'Birth date is required'],
+      trim: true,
+    },
+    email: {
+      type: String,
+      required: [true, 'Student email is required'],
+      unique: true,
+      trim: true,
+      validate: {
+        validator: (value: string) => validator.isEmail(value),
+        message: '{VALUE} is not a valid email address',
+      },
+    },
+    phoneNumber: {
+      type: String,
+      required: [true, 'Student phone number is required'],
+      unique: true,
+      trim: true,
+    },
+    emergencyPhoneNumber: {
+      type: String,
+      required: [true, 'Student emergency phone number is required'],
+      trim: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      trim: true,
+    },
+    presentAddress: {
+      type: addressSchema,
+      required: [true, 'Student present address is required'],
+      trim: true,
+    },
+    permanentAddress: {
+      type: addressSchema,
+      required: [true, 'Student permanent address is required'],
+      trim: true,
+    },
+    guardian: {
+      type: guardianSchema,
+      required: [true, 'Student guardian is required'],
+      trim: true,
+    },
+    localGuardian: {
+      type: localGuardianSchema,
+      required: [true, 'Student local guardian is required'],
+      trim: true,
+    },
+    profileImg: { type: String },
+    isActive: {
+      type: String,
+      enum: ['Active', 'Blocked'],
+      default: 'Active',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
 
-  //
-});
+    //
+  },
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  },
+);
 
 // mongoose document middleware:
 // Pre save middleware: will work on create() and save()
@@ -187,6 +194,11 @@ StudentSchema.post('save', function (doc, next) {
   // console.log(this, 'Post Hook: will execute after saving data');
   doc.password = '';
   next();
+});
+
+// Mongoose Virtual:
+StudentSchema.virtual('fullName').get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
 // Mongoose query middleware:
